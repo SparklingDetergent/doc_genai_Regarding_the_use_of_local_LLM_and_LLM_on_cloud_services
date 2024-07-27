@@ -36,7 +36,7 @@ graph TD
     G --> I[クラウドLLM]
     H --> J[比較]
     I --> J
-    J --> K[最適な導入]```
+    J --> K[最適な導入]
 ```
 
 <br/><br/>
@@ -52,8 +52,6 @@ graph TD
 | 導入の容易さ | 低 | 高 |
 
 
-```mermaid
-```
 
 <br/><br/>
 
@@ -70,8 +68,32 @@ graph TD
 * メリット：追加費用は発生しません。
 * デメリット：開発に時間と手間がかかり、開発者のスキルに依存します。
 
-
 ```mermaid
+sequenceDiagram
+    participant 開発者
+    participant インターネット検索
+    participant 既存の資料
+    participant コード
+    participant 動作確認
+    participant エラー
+
+    開発者->>インターネット検索: 新規機能の実装方法を調査
+    インターネット検索->>開発者: 情報提供
+    開発者->>既存の資料: 情報提供
+    開発者->>コード: コード記述
+    コード->>動作確認: 動作確認
+    
+    activate 動作確認
+    動作確認->>開発者: 結果報告
+    deactivate 動作確認
+
+    activate エラー
+    動作確認->>エラー: エラー発生
+    エラー->>開発者: エラー情報提供
+    開発者->>コード: コード修正
+    deactivate エラー
+
+
 ```
 
 <br/><br/>
@@ -87,6 +109,20 @@ graph TD
 
 
 ```mermaid
+sequenceDiagram
+    participant 開発者
+    participant LLM
+    participant コード
+
+    開発者->>LLM: 機能や処理内容の指示（プロンプト）
+    activate LLM
+    LLM->>開発者: コード生成
+    deactivate LLM
+    開発者->>コード: コードの確認と修正
+    activate コード
+    コード->>動作確認: 動作確認
+    deactivate コード
+
 ```
 
 <br/><br/>
@@ -102,6 +138,33 @@ graph TD
 
 
 ```mermaid
+sequenceDiagram
+    participant 開発者
+    participant ローカルLLM
+    participant コード
+    participant クラウドLLM
+
+    開発者->> ローカルLLM: 既存コード解析
+    ローカルLLM-->> コード: ソースコードの確認と修正
+    ローカルLLM->> 開発者: 解析結果
+
+    開発者->> ローカルLLM: 新規コード生成
+    ローカルLLM-->> コード: ソースコードの確認と修正
+    ローカルLLM->> 開発者: 生成されたコード
+
+    開発者->> ローカルLLM: コード修正提案
+    ローカルLLM-->> コード: ソースコードの確認と修正
+    ローカルLLM->> 開発者: 修正提案
+
+    activate クラウドLLM
+    開発者->> クラウドLLM: 高度なコード生成
+    クラウドLLM-->> 開発者: 生成されたコード
+    deactivate クラウドLLM
+
+    開発者->> コード: 動作確認
+    コード-->> 開発者: 動作結果
+
+
 ```
 
 <br/><br/>
